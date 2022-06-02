@@ -1,0 +1,17 @@
+[package]
+name = "near-sdk-abi"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+proc-macro = true
+
+[dependencies]
+convert_case = "0.5"
+near-sdk = { path = "./near-sdk-rs/near-sdk" }
+schemafy_lib = { path = "./schemafy-near/schemafy_lib" }
+serde_json = "1.0"
+syn = "1.0"
+quote = "1.0"
