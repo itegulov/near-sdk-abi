@@ -8,7 +8,7 @@ use std::{
 };
 
 #[proc_macro]
-pub fn near_abi(tokens: proc_macro::TokenStream) -> proc_macro::TokenStream {
+pub fn near_abi_ext(tokens: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let def = syn::parse_macro_input!(tokens as Def);
     let input_file_str = def.input_file.value();
     let input_file = Path::new(&input_file_str);
