@@ -4,6 +4,7 @@ use quote::{format_ident, quote};
 use schemafy_lib::{Generator, Schema};
 use std::{
     collections::HashMap,
+    env,
     path::{Path, PathBuf},
 };
 
@@ -13,8 +14,8 @@ pub fn near_abi_ext(tokens: proc_macro::TokenStream) -> proc_macro::TokenStream 
     let input_file_str = def.input_file.value();
     let input_file = Path::new(&input_file_str);
     let input_file = if input_file.is_relative() {
-        let crate_root = get_crate_root().unwrap();
-        crate_root.join(&input_file_str)
+        let current_dir = env::current_dir().unwrap();
+        current_dir.join(&input_file_str)
     } else {
         PathBuf::from(input_file)
     };
@@ -123,24 +124,4 @@ impl syn::parse::Parse for Def {
             input_file: input.parse()?,
         })
     }
-}
-
-fn get_crate_root() -> std::io::Result<PathBuf> {
-    if let Ok(path) = std::env::var("CARGO_MANIFEST_DIR") {
-        return Ok(PathBuf::from(path));
-    }
-
-    let current_dir = std::env::current_dir()?;
-
-    for p in current_dir.ancestors() {
-        if std::fs::read_dir(p)?
-            .into_iter()
-            .filter_map(Result::ok)
-            .any(|p| p.file_name().eq("Cargo.toml"))
-        {
-            return Ok(PathBuf::from(p));
-        }
-    }
-
-    Ok(current_dir)
 }
