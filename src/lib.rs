@@ -24,7 +24,7 @@ pub fn near_abi_ext(tokens: proc_macro::TokenStream) -> proc_macro::TokenStream 
 
     let near_abi = serde_json::from_str::<AbiRoot>(&abi_json).expect("invalid NEAR ABI");
     let contract_name = near_abi
-        .metainfo
+        .metadata
         .name
         .map(|n| format_ident!("Ext{}", n.to_case(Case::UpperCamel)))
         .or(def.contract_name.map(|n| format_ident!("{}", n)))
